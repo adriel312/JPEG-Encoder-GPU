@@ -37,13 +37,13 @@ cuda.synchronize()
 
 #junta as componentes da imagem
 out_img[:,:,1] = Y.copy_to_host()
-#cv2.imwrite('out_img/Y.bmp', Y)
+cv2.imwrite('out_img/Y.bmp', Y.copy_to_host())
 out_img[:,:,0] = Cb.copy_to_host()
-#cv2.imwrite('out_img/Cb.bmp', Cb)
+cv2.imwrite('out_img/Cb.bmp', Cb.copy_to_host())
 out_img[:,:,2] = Cr.copy_to_host()
-#cv2.imwrite('out_img/Cr.bmp', Cr)
+cv2.imwrite('out_img/Cr.bmp', Cr.copy_to_host())
 
-print(out_img)
+#print(out_img)
 #print (np.empty((img.shape[0], img.shape[1], 3), float))
 #print (Y.copy_to_host())
 
