@@ -103,12 +103,12 @@ for i in range(nbh):
         wmax = DCTY.shape[1]
         reord_output = np.zeros(hmax * wmax)
 
-        #reorderedY = zigzag[blockspergrid, threadsperblock](DCTY, hmax, wmax, reord_output)
-        reorderedY = zigzag(DCTY, hmax, wmax, reord_output)
-        #reorderedCb = zigzag[blockspergrid, threadsperblock](DCTCb, hmax, wmax, reord_output)
-        reorderedCb = zigzag(DCTCb, hmax, wmax, reord_output)
-        #reorderedCr = zigzag[blockspergrid, threadsperblock](DCTCr, hmax, wmax, reord_output)
-        reorderedCr = zigzag(DCTCr, hmax, wmax, reord_output)
+        zigzag[blockspergrid, threadsperblock](DCTY, hmax, wmax, reord_output)
+        reorderedY = reord_output
+        zigzag[blockspergrid, threadsperblock](DCTCb, hmax, wmax, reord_output)
+        reorderedCb = reord_output
+        zigzag[blockspergrid, threadsperblock](DCTCr, hmax, wmax, reord_output)
+        reorderedCr = reord_output
         #remonta a matriz reordered para 8x8
         reshapedY = np.reshape(reorderedY, (block_size, block_size))
         reshapedCb = np.reshape(reorderedCb, (block_size, block_size))
@@ -118,7 +118,7 @@ for i in range(nbh):
         emp_Cb[row_ind_1 : row_ind_2 , col_ind_1 : col_ind_2] = reshapedCb
         emp_Cr[row_ind_1 : row_ind_2 , col_ind_1 : col_ind_2] = reshapedCr
 
-cv2.imshow('encoded image', np.uint8(emp_Cb))
+#cv2.imshow('encoded image', np.uint8(emp_Cb))
 #cv2.imwrite('out_img/dct.bmp', np.uint8(emp_img))
 
 arrangedY = emp_Y.flatten()

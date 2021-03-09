@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from numba import cuda
 
-#@cuda.jit
+@cuda.jit
 def zigzag (input, hmax, wmax, output):
     #w = width h = height
     h = 0
@@ -63,7 +63,6 @@ def zigzag (input, hmax, wmax, output):
         if ((hmax == hmax-1) and (w == wmax-1)):    #ultimo pixel, inferior direito
             output[i] = input[h, w]
             break
-    return output
     #return output.copy_to_host(output)
     #output.copy_to_host(output)
 
