@@ -40,7 +40,6 @@ def get_run_length_encoding(image):
     while i < image.shape[0]:
         if image[i] != 0:            
             stream.append((image[i],skip))
-            #stream = stream + image[i]
             bitstream = bitstream + str(image[i])+ " " +str(skip)+ " "
             skip = 0
         else:
@@ -118,7 +117,7 @@ for i in range(nbh):
         emp_Cb[row_ind_1 : row_ind_2 , col_ind_1 : col_ind_2] = reshapedCb
         emp_Cr[row_ind_1 : row_ind_2 , col_ind_1 : col_ind_2] = reshapedCr
 
-cv2.imshow('encoded image', np.uint8(emp_Cb))
+#cv2.imshow('encoded image', np.uint8(emp_Cb))
 #cv2.imwrite('out_img/dct.bmp', np.uint8(emp_img))
 
 arrangedY = emp_Y.flatten()
