@@ -1,5 +1,3 @@
-import cv2
-import numpy as np
 from numba import cuda
 
 @cuda.jit
@@ -11,12 +9,7 @@ def zigzag (input, hmax, wmax, output):
     hmin = 0
     wmin = 0
 
-    #hmax = input.shape[0]
-    #wmax = input.shape[1]
-
     i = 0
-    #output do zigzag é uma lista com todos pixels da imagem
-    #output = np.zeros(hmax * wmax)
 
     while((h < hmax) and (w < wmax)):
         if((w + h) % 2) == 0:   #subindo
@@ -63,9 +56,3 @@ def zigzag (input, hmax, wmax, output):
         if ((hmax == hmax-1) and (w == wmax-1)):    #ultimo pixel, inferior direito
             output[i] = input[h, w]
             break
-    #return output.copy_to_host(output)
-    #output.copy_to_host(output)
-
-#input = cv2.imread('in_img/fusca.jpg', cv2.IMREAD_GRAYSCALE)
-#np.savetxt('img.txt',zigzag(input))
-#print(zigzag(input))
