@@ -1,4 +1,4 @@
-# TCC2-Image_Compressor
+# JPEG-Encoder-GPU
 Trabalho de Conclusão de Curso. Implementação de um compressor de imagens JPEG que rode na GPU para análise de desempenho.
 
 Necessário a instalação da biblioteca opencv.
