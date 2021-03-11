@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 import math
-from numba import cuda
 from zigzag import *
 
 threadsperblock = 8
@@ -36,18 +35,17 @@ quant_matC = np.array([     [17,18,24,47,99,99,99,99],
 def get_run_length_encoding(image):
     i = 0
     skip = 0
-    stream = []    
-    bitstream = ""
-    image = image.astype(int)
+    stream = []
+    bitstream = ''
     while i < image.shape[0]:
         if image[i] != 0:            
             stream.append((image[i],skip))
+            #stream = stream + image[i]
             bitstream = bitstream + str(image[i])+ " " +str(skip)+ " "
             skip = 0
         else:
             skip = skip + 1
         i = i + 1
-
     return bitstream
 
 Y = cv2.imread('out_img/Y.bmp', cv2.IMREAD_GRAYSCALE)
@@ -105,8 +103,10 @@ for i in range(nbh):
 
         zigzag[blockspergrid, threadsperblock](DCTY, hmax, wmax, reord_output)
         reorderedY = reord_output
+        reord_output = np.zeros(hmax * wmax)
         zigzag[blockspergrid, threadsperblock](DCTCb, hmax, wmax, reord_output)
         reorderedCb = reord_output
+        reord_output = np.zeros(hmax * wmax)
         zigzag[blockspergrid, threadsperblock](DCTCr, hmax, wmax, reord_output)
         reorderedCr = reord_output
         #remonta a matriz reordered para 8x8
@@ -118,15 +118,21 @@ for i in range(nbh):
         emp_Cb[row_ind_1 : row_ind_2 , col_ind_1 : col_ind_2] = reshapedCb
         emp_Cr[row_ind_1 : row_ind_2 , col_ind_1 : col_ind_2] = reshapedCr
 
-#cv2.imshow('encoded image', np.uint8(emp_Cb))
+cv2.imshow('encoded image', np.uint8(emp_Cb))
 #cv2.imwrite('out_img/dct.bmp', np.uint8(emp_img))
 
 arrangedY = emp_Y.flatten()
 arrangedCb = emp_Cb.flatten()
 arrangedCr = emp_Cr.flatten()
+
 #gravando os dados codificados com RLE para um arquivo de texto
+arrangedY = arrangedY.astype(int)
 bitstreamY = get_run_length_encoding(arrangedY)
+
+arrangedCb = arrangedCb.astype(int)
 bitstreamCb = get_run_length_encoding(arrangedCb)
+
+arrangedCr = arrangedCr.astype(int)
 bitstreamCr = get_run_length_encoding(arrangedCr)
 
 bitstream = str(emp_Y.shape[0]) + " " + str(emp_Y.shape[1]) + " " + bitstreamY + " " + bitstreamCb + " " + bitstreamCr + ";"
