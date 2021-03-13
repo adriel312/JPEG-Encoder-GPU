@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import math
+from numba import jit
 from zigzag import *
 
 threadsperblock = 8
@@ -31,7 +32,7 @@ quant_matC = np.array([     [17,18,24,47,99,99,99,99],
                             [99,99,99,99,99,99,99,99],
                             [99,99,99,99,99,99,99,99]])
 
-#@cuda.jit
+@jit
 def get_run_length_encoding(image):
     i = 0
     skip = 0
